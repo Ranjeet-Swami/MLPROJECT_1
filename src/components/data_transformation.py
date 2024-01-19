@@ -31,19 +31,24 @@ class DataTransformation:
                 "lunch",
                 "test_preparation_course",
             ]
+
+            
             num_pipeline= Pipeline(
                 steps=[("imputer",SimpleImputer(strategy="median")),("scaler",StandardScaler())] 
+
+            
             
             )
             cat_pipeline=Pipeline(
                 steps=[
                     ("imputer",SimpleImputer(strategy="most_frequent")),
-                    ("one_hot_encoder",OneHotEncoder()),
-                    ("scaler",StandardScaler(with_mean=False)) 
+                    ("one_hot_encoder",OneHotEncoder(handle_unknown=("ignore"))),
+                    ("scaler",StandardScaler(with_mean=False))
                     ]
             )
             logging.info("numerical coloumn standard scaling completed")
             logging.info("catagorical coloumn encoding completedd")
+
             
             preprocessor=ColumnTransformer([("num_pipeline",num_pipeline,numerical_columns),
                                             ("cat_pipeline",cat_pipeline,categorical_columns)])
